@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Child Openfin Example</title>
+
+    <h1>Child Openfin Example</h1>
+</head>
+
+<style>
+    .higher{
+        background: green
+    }
+    .lower{
+        background: red
+    }
+</style>
+
+
+<body>
+    <input type="number" id="minimum" step="0.1" min="0.0" max="1.0">
+   <div id="data"/>
+</body>
+
+<script lang="javascript">
+
+        const minimumInput = document.getElementById('minimum');
+        const dataDiv = document.getElementById("data");
+
+        window.addEventListener('load', () => fin.desktop.Window.getCurrent().getParentWindow().executeJavaScript(
+            "parentAlert()",
+            () => console.log('execute js on parent success'),
+            (error) => console.warn('execute js on parent error')
+        ))
+
+        minimumInput.addEventListener('change', (event) => {
+            if(dataDiv.innerHTML < event.target.value) dataDiv.className = 'lower'
+            else dataDiv.className = 'higher'
+        });
+
+        const setData = (data) => {
+            dataDiv.innerHTML = data;
+            
+            const minimumNum = minimumInput.value;
+
+            if(data < minimumNum) dataDiv.className = 'lower'
+            else dataDiv.className = 'higher'
+        }
+
+
+
+    </script>
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Openfin Example</title>
+
+    <h1>Hello Openfin Example</h1>
+</head>
+<body>
+
+    <button
+        id="newButtonWindow" 
+        autofocus="true">Launch new window</button>
+
+
+    <button id="sendDataButton">Send Data to All Child Windows</button>
+
+    <div id="url"/>
+</body>
+
+<script lang="javascript"> 
+    let newData = Math.random();
+
+    const parentAlert = () => {
+        alert('child window opened');
+        setDataAllWindows(newData);
+    }
+
+    const urlElement = document.getElementById('url');
+
+    document
+    .getElementById('newButtonWindow')
+    .addEventListener("click", () => {
+        const uuid = new Date().getTime().toString();
+
+        new fin.desktop.Window({
+            "name": `MyAppChild${uuid}`,
+            "uuid": "33aa9062-9eb0-4875-b819-c90f38ef03ea",
+            "url": "http://localhost:5000/child.html",
+            "autoShow": true,
+            "defaultWidth": 500,
+            "defaultHeight": 500
+        });
+    });
+
+    document
+    .getElementById('sendDataButton')
+    .addEventListener("click", () => {
+        newData = Math.random();
+        setDataAllWindows(newData);
+    })
+
+    const setDataAllWindows = (data) => {
+        fin
+        .desktop
+        .Application
+        .getCurrent()
+        .getChildWindows(windows => 
+            windows.forEach(window => {
+            window.executeJavaScript(
+                `setData(${data})`,
+                () => console.log(`set data to window ${window.name}`),
+                (error) => console.log(`failed to set data to window ${window.name}`)
+            )})
+        );
+    }
+
+    fin
+    .desktop
+    .InterApplicationBus
+    .subscribe(
+        "*",
+        "data",
+        (message, uuid, name) => {
+            setDataAllWindows(message.payload)
+        }
+    )
+    
+</script>
+
+</html>

@@ -1,0 +1,13 @@
+{
+    "runtime": {
+        "version": "stable"
+    },
+    "startup_app": {
+        "name": "MyApp2",
+        "uuid": "33aa9062-9eb0-4875-b819-c90f38ef03ea2",
+        "url": "http://localhost:5000/index2.html",
+        "autoShow": true,
+        "defaultWidth": 500,
+        "defaultHeight": 500
+    }
+}
