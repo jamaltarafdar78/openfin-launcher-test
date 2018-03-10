@@ -14,10 +14,11 @@
         id="newButtonWindow" 
         autofocus="true">Launch new window</button>
 
-
     <button id="sendDataButton">Send Data to All Child Windows</button>
 
-    <div id="url"/>
+    <button
+    id="reactApp">Open react app</button>
+
 </body>
 
 <script lang="javascript"> 
@@ -29,6 +30,9 @@
     }
 
     const urlElement = document.getElementById('url');
+    let numChild = 0;
+
+    calcDefaultChild = () => 100 * (numChild++);
 
     document
     .getElementById('newButtonWindow')
@@ -41,6 +45,23 @@
             "url": "http://localhost:5000/child.html",
             "autoShow": true,
             "defaultWidth": 500,
+            "defaultHeight": 500,
+            "defaultLeft": calcDefaultChild(),
+            "defaultTop": calcDefaultChild()
+        });
+    });
+
+    document
+    .getElementById('reactApp')
+    .addEventListener("click", () => {
+        console.log("Open react app ");
+
+        new fin.desktop.Window({
+            "name": `ReactApp`,
+            "uuid": "33aa9062-9eb0-4875-b819-c90f38ef03ea",
+            "url": "http://localhost:3000",
+            "autoShow": true,
+            "defaultWidth": 500,
             "defaultHeight": 500
         });
     });
@@ -50,7 +71,7 @@
     .addEventListener("click", () => {
         newData = Math.random();
         setDataAllWindows(newData);
-    })
+    });
 
     const setDataAllWindows = (data) => {
         fin
